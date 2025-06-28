@@ -7,7 +7,9 @@ const RootLayout = () => {
   return (
     <main className="bg-accent">
       <Header />
-      <Outlet />
+      <section className="min-h-[calc(100vh-439px)]">
+        <Outlet />
+      </section>
       <Footer />
     </main>
   );

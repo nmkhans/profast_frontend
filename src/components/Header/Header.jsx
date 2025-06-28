@@ -37,6 +37,20 @@ const Header = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
                 <NavItems />
+                <li className="flex space-y-3 mt-5">
+                  <Link
+                    className="btn btn-outline rounded-lg border-slate-400 text-primary-content"
+                    to="/login"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    className="btn btn-primary rounded-lg text-base-content"
+                    to="/register"
+                  >
+                    Register
+                  </Link>
+                </li>
               </ul>
             </div>
             <Link className="relative" to="/">
@@ -55,7 +69,7 @@ const Header = () => {
               <NavItems />
             </ul>
           </div>
-          <div className="navbar-end space-x-5">
+          <div className="hidden lg:navbar-end space-x-5">
             <Link
               className="btn btn-outline rounded-lg border-slate-400 text-primary-content"
               to="/login"
