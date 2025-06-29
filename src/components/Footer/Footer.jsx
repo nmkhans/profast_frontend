@@ -24,7 +24,7 @@ const Footer = () => {
         </p>
         <span className="border-2 border-primary border-dashed w-full"></span>
         <div className="">
-          <ul className="flex items-center space-x-5 py-5">
+          <ul className="flex flex-col lg:flex-row items-center space-x-5 py-5">
             <NavItems />
           </ul>
         </div>
