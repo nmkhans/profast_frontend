@@ -1,22 +1,12 @@
 import React from "react";
 import NavItems from "../NavItems/NavItems";
-import { Link } from "react-router";
-import FooterLogo from "../../assets/logo.png";
+import Logo from "../Logo/Logo";
 
 const Footer = () => {
   return (
     <footer className="footer footer-horizontal footer-center bg-base-content text-[#DADADA] p-10">
       <aside>
-        <Link className="relative" to="/">
-          <img
-            className="absolute -top-2 left-2 w-6"
-            src={FooterLogo}
-            alt="Footer Logo"
-          />
-          <span className="ms-5 text-dark font-bold text-2xl">
-            Profast
-          </span>
-        </Link>
+        <Logo />
         <p className="font-bold w-4/6 my-5">
           Enjoy fast, reliable parcel delivery with real-time tracking
           and zero hassle. From personal packages to business

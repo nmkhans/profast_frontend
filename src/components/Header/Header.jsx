@@ -2,7 +2,7 @@ import React from "react";
 import Container from "./../../layouts/Container";
 import NavItems from "../NavItems/NavItems";
 import { Link } from "react-router";
-import HeaderLogo from "../../assets/logo.png";
+import Logo from "../Logo/Logo";
 
 const Header = () => {
   return (
@@ -53,16 +53,7 @@ const Header = () => {
                 </li>
               </ul>
             </div>
-            <Link className="relative" to="/">
-              <img
-                className="absolute -top-2 left-2 w-6"
-                src={HeaderLogo}
-                alt="Header Logo"
-              />
-              <span className="ms-5 text-dark font-bold text-2xl">
-                Profast
-              </span>
-            </Link>
+            <Logo />
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
