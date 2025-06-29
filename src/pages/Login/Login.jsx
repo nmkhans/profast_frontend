@@ -1,6 +1,7 @@
 import Logo from "@/components/Logo/Logo";
 import React from "react";
 import LoginImg from "@/assets/login.png";
+import { Link } from "react-router";
 
 const Login = () => {
   return (
@@ -24,7 +25,7 @@ const Login = () => {
           </div>
 
           {/* Login Form */}
-          <div className="space-y-4 ">
+          <form className="space-y-4 ">
             {/* Email Field */}
             <div className="form-control">
               <label className="label">
@@ -67,19 +68,19 @@ const Login = () => {
             <button className="bg-primary border-primary btn w-full text-secondary font-bold text-sm sm:text-base h-10 sm:h-12">
               Login
             </button>
-          </div>
+          </form>
 
           {/* Register Link */}
           <div className="mt-4 sm:mt-6 text-center">
             <span className="text-xs sm:text-sm text-base-content/70">
               Don't have any account?{" "}
             </span>
-            <a
-              href="#"
+            <Link
+              to="/register"
               className="text-primary link font-medium text-xs sm:text-sm"
             >
               Register
-            </a>
+            </Link>
           </div>
 
           {/* Divider */}
