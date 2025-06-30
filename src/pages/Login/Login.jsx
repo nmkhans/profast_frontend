@@ -2,8 +2,20 @@ import Logo from "@/components/Logo/Logo";
 import React from "react";
 import LoginImg from "@/assets/login.png";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import FieldError from "@/components/FieldError/FieldError";
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
     <div className="flex flex-col lg:flex-row">
       {/* Left side - Login Form */}
@@ -25,7 +37,10 @@ const Login = () => {
           </div>
 
           {/* Login Form */}
-          <form className="space-y-4 ">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4 "
+          >
             {/* Email Field */}
             <div className="form-control">
               <label className="label">
@@ -37,6 +52,17 @@ const Login = () => {
                 type="email"
                 placeholder="Email"
                 className="input input-bordered w-full text-sm sm:text-base h-10"
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "Email is required!",
+                  },
+                })}
+              />
+              <FieldError
+                name="email"
+                type="required"
+                errors={errors}
               />
             </div>
 
@@ -51,6 +77,27 @@ const Login = () => {
                 type="password"
                 placeholder="Password"
                 className="input input-bordered w-full text-sm sm:text-base h-10"
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "Password is required!",
+                  },
+                  minLength: {
+                    value: 6,
+                    message:
+                      "Password has to be at least 6 charecter",
+                  },
+                })}
+              />
+              <FieldError
+                name="password"
+                type="required"
+                errors={errors}
+              />
+              <FieldError
+                name="password"
+                type="minLength"
+                errors={errors}
               />
             </div>
 

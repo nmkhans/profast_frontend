@@ -3,8 +3,20 @@ import RegisterImg from "@/assets/login.png";
 import ImageUploadImg from "@/assets/image_upload.png";
 import { Link } from "react-router";
 import Logo from "@/components/Logo/Logo";
+import { useForm } from "react-hook-form";
+import FieldError from "@/components/FieldError/FieldError";
 
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data)
+  };
+
   return (
     <div className="flex flex-col lg:flex-row">
       {/* Left side - Login Form */}
@@ -26,19 +38,33 @@ const Register = () => {
           </div>
 
           {/* Login Form */}
-          <form className="space-y-4 ">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4 "
+          >
             {/* Profile field */}
             <div className="form-control">
               <label htmlFor="image" className="label">
                 <span className="label-text font-medium text-sm sm:text-base cursor-pointer">
                   <img src={ImageUploadImg} alt="Image upload" />
                 </span>
+                <FieldError
+                  name="image"
+                  type="required"
+                  errors={errors}
+                />
               </label>
               <input
                 type="file"
                 id="image"
                 placeholder="Name"
                 className="hidden input input-bordered w-full text-sm sm:text-base h-10"
+                {...register("image", {
+                  required: {
+                    value: true,
+                    message: "Image is required!",
+                  },
+                })}
               />
             </div>
 
@@ -53,6 +79,17 @@ const Register = () => {
                 type="text"
                 placeholder="Name"
                 className="input input-bordered w-full text-sm sm:text-base h-10"
+                {...register("name", {
+                  required: {
+                    value: true,
+                    message: "Name is required!",
+                  },
+                })}
+              />
+              <FieldError
+                name="name"
+                type="required"
+                errors={errors}
               />
             </div>
 
@@ -67,6 +104,17 @@ const Register = () => {
                 type="email"
                 placeholder="Email"
                 className="input input-bordered w-full text-sm sm:text-base h-10"
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "Email is required!",
+                  },
+                })}
+              />
+              <FieldError
+                name="email"
+                type="required"
+                errors={errors}
               />
             </div>
 
@@ -81,6 +129,27 @@ const Register = () => {
                 type="password"
                 placeholder="Password"
                 className="input input-bordered w-full text-sm sm:text-base h-10"
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "Password is required!",
+                  },
+                  minLength: {
+                    value: 6,
+                    message:
+                      "Password has to be at least 6 charecter",
+                  },
+                })}
+              />
+              <FieldError
+                name="password"
+                type="required"
+                errors={errors}
+              />
+              <FieldError
+                name="password"
+                type="minLength"
+                errors={errors}
               />
             </div>
 
