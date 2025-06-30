@@ -46,6 +46,14 @@ const NavItems = () => {
           Be a Rider
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          to="/coverage"
+          className={({ isActive }) => (isActive ? "" : "")}
+        >
+          Coverage
+        </NavLink>
+      </li>
     </>
   );
 };

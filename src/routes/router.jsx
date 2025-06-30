@@ -3,6 +3,7 @@ import RootLayout from "@/layouts/RootLayout";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login/Login";
 import Register from "@/pages/Register/Register";
+import Coverage from "@/pages/Coverage/Coverage";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "/coverage",
+        element: <Coverage />,
       },
     ],
   },
