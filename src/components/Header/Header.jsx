@@ -3,8 +3,11 @@ import Container from "./../../layouts/Container";
 import NavItems from "../NavItems/NavItems";
 import { Link } from "react-router";
 import Logo from "../Logo/Logo";
+import { useAuthContext } from "@/context/Auth/AuthContext";
 
 const Header = () => {
+  const {user, loading} = useAuthContext();
+  console.log(user)
   return (
     <header className="pt-5">
       <Container>

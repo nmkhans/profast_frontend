@@ -1,9 +1,13 @@
-import Logo from "@/components/Logo/Logo";
 import React from "react";
-import LoginImg from "@/assets/login.png";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import LoginImg from "@/assets/login.png";
+import Logo from "@/components/Logo/Logo";
 import FieldError from "@/components/FieldError/FieldError";
+import { useAuthContext } from "@/context/Auth/AuthContext";
+import { firebaseErrors } from "@/utils/firebaseErrors";
 
 const Login = () => {
   const {
@@ -11,9 +15,36 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { loginUser, googleLogin, setLoading } = useAuthContext();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const { email, password } = data;
+
+    try {
+      const res = await loginUser(email, password);
+
+      if (res.user?.accessToken) {
+        setLoading(false);
+        toast.success("Login successful.");
+        navigate(location.state?.from || "/");
+      }
+    } catch (error) {
+      const errorMessage =
+        firebaseErrors[error.code] || firebaseErrors["unknown"];
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const res = await googleLogin();
+
+    if (res.user?.accessToken) {
+      setLoading(false);
+      toast.success("Login successfull.");
+      navigate(location?.state?.from || "/");
+    }
   };
 
   return (
@@ -136,7 +167,10 @@ const Login = () => {
           </div>
 
           {/* Google Login Button */}
-          <button className="btn btn-outline w-full text-sm sm:text-base h-10 sm:h-12">
+          <button
+            onClick={handleGoogleLogin}
+            className="btn btn-outline w-full text-sm sm:text-base h-10 sm:h-12"
+          >
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5"
               viewBox="0 0 24 24"

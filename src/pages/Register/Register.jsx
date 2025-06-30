@@ -1,10 +1,14 @@
 import React from "react";
+import { Link, useNavigate, useLocation } from "react-router";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import RegisterImg from "@/assets/login.png";
 import ImageUploadImg from "@/assets/image_upload.png";
-import { Link } from "react-router";
 import Logo from "@/components/Logo/Logo";
-import { useForm } from "react-hook-form";
 import FieldError from "@/components/FieldError/FieldError";
+import { useAuthContext } from "@/context/Auth/AuthContext";
+import { firebaseErrors } from "@/utils/firebaseErrors";
 
 const Register = () => {
   const {
@@ -12,9 +16,42 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { registerUser, updateUserProfile, googleLogin, setLoading } =
+    useAuthContext();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data)
+  const onSubmit = async (data) => {
+    const { name, email, password } = data;
+
+    try {
+      const res = await registerUser(email, password);
+
+      if (res?.user?.accessToken) {
+        updateUserProfile({
+          name,
+          image: "",
+        });
+
+        setLoading(false);
+        toast.success("Registration successful.");
+        navigate(location.state?.from || "/");
+      }
+    } catch (error) {
+      const errorMessage =
+        firebaseErrors[error.code] || firebaseErrors["unknown"];
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const res = await googleLogin();
+
+    if (res.user?.accessToken) {
+      setLoading(false);
+      toast.success("Login successfull.");
+      navigate(location?.state?.from || "/");
+    }
   };
 
   return (
@@ -178,7 +215,10 @@ const Register = () => {
           </div>
 
           {/* Google Login Button */}
-          <button className="btn btn-outline w-full text-sm sm:text-base h-10 sm:h-12">
+          <button
+            onClick={handleGoogleLogin}
+            className="btn btn-outline w-full text-sm sm:text-base h-10 sm:h-12"
+          >
             <svg
               className="w-4 h-4 sm:w-5 sm:h-5"
               viewBox="0 0 24 24"
