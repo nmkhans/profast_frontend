@@ -1,13 +1,16 @@
 import React from "react";
-import Container from "./../../layouts/Container";
-import NavItems from "../NavItems/NavItems";
 import { Link } from "react-router";
-import Logo from "../Logo/Logo";
+import { Menu } from "lucide-react";
+import Container from "@/layouts/Container";
 import { useAuthContext } from "@/context/Auth/AuthContext";
+import NavItems from "../NavItems/NavItems";
+import Logo from "../Logo/Logo";
+import Spinner from "../Spinner/Spinner";
+import UserProfile from "../UserProfile/UserProfile";
 
 const Header = () => {
-  const {user, loading} = useAuthContext();
-  console.log(user)
+  const { user, loading } = useAuthContext();
+
   return (
     <header className="pt-5">
       <Container>
@@ -17,43 +20,39 @@ const Header = () => {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost lg:hidden"
+                className="btn btn-ghost lg:hidden p-1"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  {" "}
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h8m-8 6h16"
-                  />{" "}
-                </svg>
+                <Menu size={20} />
               </div>
               <ul
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
                 <NavItems />
-                <li className="flex space-y-3 mt-5">
-                  <Link
-                    className="btn btn-outline rounded-lg border-slate-400 text-primary-content"
-                    to="/login"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    className="btn btn-primary rounded-lg text-base-content"
-                    to="/register"
-                  >
-                    Register
-                  </Link>
-                </li>
+                {loading ? (
+                  <div className="me-5">
+                    <Spinner />
+                  </div>
+                ) : user ? (
+                  <div className="ms-5 mt-5">
+                    <UserProfile isMobile />
+                  </div>
+                ) : (
+                  <li className="flex space-y-3 mt-5">
+                    <Link
+                      className="btn btn-outline rounded-lg border-slate-400 text-primary-content"
+                      to="/login"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      className="btn btn-primary rounded-lg text-base-content"
+                      to="/register"
+                    >
+                      Register
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
             <Logo />
@@ -64,18 +63,30 @@ const Header = () => {
             </ul>
           </div>
           <div className="hidden lg:navbar-end space-x-5">
-            <Link
-              className="btn btn-outline rounded-lg border-slate-400 text-primary-content"
-              to="/login"
-            >
-              Login
-            </Link>
-            <Link
-              className="btn btn-primary rounded-lg text-base-content"
-              to="/register"
-            >
-              Register
-            </Link>
+            {loading ? (
+              <div className="me-5">
+                <Spinner />
+              </div>
+            ) : user ? (
+              <div className="me-5">
+                <UserProfile />
+              </div>
+            ) : (
+              <>
+                <Link
+                  className="btn btn-outline rounded-lg border-slate-400 text-primary-content"
+                  to="/login"
+                >
+                  Login
+                </Link>
+                <Link
+                  className="btn btn-primary rounded-lg text-base-content"
+                  to="/register"
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </Container>
