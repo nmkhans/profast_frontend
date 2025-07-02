@@ -7,6 +7,8 @@ import Spinner from "@/components/Spinner/Spinner";
 import warehouses from "@/data/warehouses.json";
 import { getDistrictsByRegion } from "@/utils/getDistrictsByRegion";
 import { calculateCost } from "@/utils/calculateCost";
+import Swal from "sweetalert2";
+import { generateTrackingId } from "@/utils/generateTrackingId";
 
 const SendParcel = () => {
   const {
@@ -26,8 +28,35 @@ const SendParcel = () => {
   const onSubmit = async (data) => {
     const totalCost = calculateCost(data);
 
-    data.totalCost = totalCost;
-    console.log(data);
+    const parcelData = {
+      ...data,
+      totalCost,
+      createdBy: user?.email,
+      deliveryStatus: "not_collected",
+      paymentStatus: "unpaid",
+      trackingId: generateTrackingId(),
+      createdAt: new Date().toISOString(),
+    };
+
+    Swal.fire({
+      title: "Confirm booking!",
+      text: "Your shipment booking is being placed. Please checkout to confirm!",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "gray",
+      cancelButtonText: "Keep editing.",
+      confirmButtonText: "Proceed to checkout.",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(parcelData);
+        /* Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        }); */
+      }
+    });
   };
 
   return (
