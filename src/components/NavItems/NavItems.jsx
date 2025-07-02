@@ -7,6 +7,14 @@ const NavItems = () => {
     <>
       <li>
         <NavLink
+          to="/send-parcel"
+          className={({ isActive }) => (isActive ? active : "")}
+        >
+          Send Parcel
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
           to="/services"
           className={({ isActive }) => (isActive ? active : "")}
         >
@@ -16,7 +24,7 @@ const NavItems = () => {
       <li>
         <NavLink
           to="/coverage"
-          className={({ isActive }) => (isActive ? "" : "")}
+          className={({ isActive }) => (isActive ? active : "")}
         >
           Coverage
         </NavLink>
@@ -24,7 +32,7 @@ const NavItems = () => {
       <li>
         <NavLink
           to="/about-us"
-          className={({ isActive }) => (isActive ? "" : "")}
+          className={({ isActive }) => (isActive ? active : "")}
         >
           About Us
         </NavLink>
@@ -32,7 +40,7 @@ const NavItems = () => {
       <li>
         <NavLink
           to="/pricing"
-          className={({ isActive }) => (isActive ? "" : "")}
+          className={({ isActive }) => (isActive ? active : "")}
         >
           {" "}
           Pricing
@@ -41,17 +49,9 @@ const NavItems = () => {
       <li>
         <NavLink
           to="/be-rider"
-          className={({ isActive }) => (isActive ? "" : "")}
+          className={({ isActive }) => (isActive ? active : "")}
         >
           Be a Rider
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
-          to="/coverage"
-          className={({ isActive }) => (isActive ? "" : "")}
-        >
-          Coverage
         </NavLink>
       </li>
     </>
