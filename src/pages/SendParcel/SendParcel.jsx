@@ -6,6 +6,7 @@ import { useAuthContext } from "@/context/Auth/AuthContext";
 import Spinner from "@/components/Spinner/Spinner";
 import warehouses from "@/data/warehouses.json";
 import { getDistrictsByRegion } from "@/utils/getDistrictsByRegion";
+import { calculateCost } from "@/utils/calculateCost";
 
 const SendParcel = () => {
   const {
@@ -18,12 +19,14 @@ const SendParcel = () => {
 
   const regions = [...new Set(warehouses.map((wh) => wh.region))];
 
+  const parcelType = watch("parcelType");
   const senderWarehouse = watch("senderWarehouse");
   const reciverWarehouse = watch("reciverWarehouse");
 
-  console.log(senderWarehouse, reciverWarehouse);
-
   const onSubmit = async (data) => {
+    const totalCost = calculateCost(data);
+
+    data.totalCost = totalCost;
     console.log(data);
   };
 
@@ -120,19 +123,37 @@ const SendParcel = () => {
                             </span>
                           </label>
                           <input
+                            disabled={
+                              !parcelType || parcelType === "document"
+                            }
                             type="text"
                             placeholder="Parcel Weight (KG)"
                             className="input input-bordered w-full text-sm sm:text-base"
+                            defaultValue={0}
                             {...register("parcelWeight", {
                               required: {
                                 value: true,
                                 message: "Weight is required!",
+                              },
+                              validate: {
+                                min: (value) => {
+                                  return parcelType === "non-document"
+                                    ? value < 1
+                                      ? "Weight can not be less than 1kg"
+                                      : true
+                                    : true;
+                                },
                               },
                             })}
                           />
                           <FieldError
                             name="parcelWeight"
                             type="required"
+                            errors={errors}
+                          />
+                          <FieldError
+                            name="parcelWeight"
+                            type="min"
                             errors={errors}
                           />
                         </div>
