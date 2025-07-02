@@ -7,14 +7,6 @@ const NavItems = () => {
     <>
       <li>
         <NavLink
-          to="/send-parcel"
-          className={({ isActive }) => (isActive ? active : "")}
-        >
-          Send Parcel
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
           to="/services"
           className={({ isActive }) => (isActive ? active : "")}
         >
@@ -44,6 +36,14 @@ const NavItems = () => {
         >
           {" "}
           Pricing
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/send-parcel"
+          className={({ isActive }) => (isActive ? active : "")}
+        >
+          Send Parcel
         </NavLink>
       </li>
       <li>
