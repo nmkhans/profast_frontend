@@ -1,6 +1,7 @@
 import React from "react";
-import Container from "@/layouts/Container";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import Container from "@/layouts/Container";
 import FieldError from "@/components/FieldError/FieldError";
 import { useAuthContext } from "@/context/Auth/AuthContext";
 import Spinner from "@/components/Spinner/Spinner";
@@ -9,6 +10,7 @@ import { getDistrictsByRegion } from "@/utils/getDistrictsByRegion";
 import { calculateCost } from "@/utils/calculateCost";
 import Swal from "sweetalert2";
 import { generateTrackingId } from "@/utils/generateTrackingId";
+import useAxios from "@/hooks/useAxios";
 
 const SendParcel = () => {
   const {
@@ -18,6 +20,7 @@ const SendParcel = () => {
     watch,
   } = useForm();
   const { user, loading } = useAuthContext();
+  const { axiosInstance } = useAxios();
 
   const regions = [...new Set(warehouses.map((wh) => wh.region))];
 
@@ -47,14 +50,13 @@ const SendParcel = () => {
       cancelButtonColor: "gray",
       cancelButtonText: "Keep editing.",
       confirmButtonText: "Proceed to checkout.",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        console.log(parcelData);
-        /* Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-        }); */
+        const res = await axiosInstance.post("/parcels", parcelData);
+
+        if (res.status === 201) {
+          toast.success(res.data.message);
+        }
       }
     });
   };
