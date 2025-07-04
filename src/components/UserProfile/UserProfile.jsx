@@ -2,6 +2,7 @@ import React from "react";
 import { useAuthContext } from "@/context/Auth/AuthContext";
 import userPlaceholder from "@/assets/userPlaceholder.png";
 import { toast } from "sonner";
+import { Link } from "react-router";
 
 const UserProfile = ({ isMobile }) => {
   const { user, logoutUser } = useAuthContext();
@@ -32,7 +33,7 @@ const UserProfile = ({ isMobile }) => {
         className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
       >
         <li>
-          <a>Item 1</a>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
         <li>
           <button onClick={handleLogout} className="btn btn-ghost">

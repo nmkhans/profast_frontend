@@ -1,18 +1,38 @@
 import React from "react";
 import useGetQueryFunctions from "@/hooks/useGetQueryFunctions";
-import { useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useAuthContext } from "@/context/Auth/AuthContext";
 import Spinner from "@/components/Spinner/Spinner";
+import { toast } from "sonner";
 
 const MyParcel = () => {
+  const { getAllParcels, deleteParcel } = useGetQueryFunctions();
   const { user } = useAuthContext();
-  const { getAllParcels } = useGetQueryFunctions();
-  const { data, isPending, isError, error } = useQuery({
+  const queryClient = useQueryClient();
+
+  const { data, isPending } = useQuery({
     queryKey: ["my-parcels", user?.email],
     queryFn: () => getAllParcels(user?.email),
   });
 
-  console.log(data);
+  const { mutate } = useMutation({
+    mutationFn: (id) => deleteParcel(id),
+  });
+
+  const handleDelete = (id) => {
+    mutate(id, {
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({
+          queryKey: ["my-parcels", user.email],
+        });
+      },
+    });
+  };
 
   return (
     <section className="py-[80px]">
@@ -27,7 +47,7 @@ const MyParcel = () => {
             <div className="text-center">
               <Spinner />
             </div>
-          ) : data.data.length > 0 ? (
+          ) : data?.data?.length > 0 ? (
             <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
               <table className="table">
                 {/* head */}
@@ -42,9 +62,8 @@ const MyParcel = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* row 1 */}
-                  {data.data.map((parcel, i) => (
-                    <tr>
+                  {data?.data?.map((parcel, i) => (
+                    <tr key={parcel._id}>
                       <th>{i + 1}</th>
                       <td>{parcel.parcelType}</td>
                       <td>
@@ -69,7 +88,10 @@ const MyParcel = () => {
                         <button className="btn btn-sm btn-outline btn-success">
                           Pay
                         </button>
-                        <button className="btn btn-sm btn-outline btn-error">
+                        <button
+                          onClick={() => handleDelete(parcel._id)}
+                          className="btn btn-sm btn-outline btn-error"
+                        >
                           Delete
                         </button>
                       </td>

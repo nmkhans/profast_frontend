@@ -1,18 +1,33 @@
 import React from "react";
 import useAxios from "./useAxios";
+import { toast } from "sonner";
 
 const useGetQueryFunctions = () => {
   const { axiosInstance } = useAxios();
 
   const getAllParcels = async (email) => {
-    const res = await axiosInstance.get(
-      email ? `/parcels?email=${email}` : "/parcels"
-    );
+    try {
+      const res = await axiosInstance.get(
+        email ? `/parcels?email=${email}` : "/parcels"
+      );
 
-    return res.data;
+      return res.data;
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
-  return { getAllParcels };
+  const deleteParcel = async (id) => {
+    try {
+      const res = await axiosInstance.delete(`/parcels/delete/${id}`);
+
+      return res.data;
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  return { getAllParcels, deleteParcel };
 };
 
 export default useGetQueryFunctions;
