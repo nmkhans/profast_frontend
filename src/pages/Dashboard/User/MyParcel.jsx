@@ -8,11 +8,13 @@ import {
 import { useAuthContext } from "@/context/Auth/AuthContext";
 import Spinner from "@/components/Spinner/Spinner";
 import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 const MyParcel = () => {
   const { getAllParcels, deleteParcel } = useGetQueryFunctions();
   const { user } = useAuthContext();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data, isPending } = useQuery({
     queryKey: ["my-parcels", user?.email],
@@ -32,6 +34,10 @@ const MyParcel = () => {
         });
       },
     });
+  };
+
+  const handlePay = (id) => {
+    navigate(`/payment/${id}`);
   };
 
   return (
@@ -85,7 +91,11 @@ const MyParcel = () => {
                         <button className="btn btn-sm btn-outline">
                           View
                         </button>
-                        <button className="btn btn-sm btn-outline btn-success">
+                        <button
+                          disabled={parcel.paymentStatus === "paid"}
+                          onClick={() => handlePay(parcel._id)}
+                          className="btn btn-sm btn-outline btn-success"
+                        >
                           Pay
                         </button>
                         <button
